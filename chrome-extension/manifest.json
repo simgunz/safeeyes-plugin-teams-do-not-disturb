@@ -3,6 +3,9 @@
   "name": "Microsoft Teams Presence",
   "description": "Webhook that publishes the user presence status with a POST request.",
   "version": "1.0",
+  "icons": {
+    "128": "icons/video-chat.png"
+  },
   "content_scripts": [
     {
       "js": ["scripts/content.js"],
