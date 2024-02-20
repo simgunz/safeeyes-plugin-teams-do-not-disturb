@@ -4,6 +4,9 @@ from pathlib import Path
 from safeeyes import utility
 
 context = None
+PRESENCE_FILE_PATH = (
+    Path(utility.HOME_DIRECTORY) / ".local" / "share" / "safeeyes" / "teamspresence"
+)
 
 
 def init(ctx, safeeyes_config, plugin_config) -> None:
@@ -23,10 +26,9 @@ def on_start_break(break_obj) -> bool:
 
 
 def _should_skip_break() -> bool:
-    safeeyes_presence_file = Path(utility.CONFIG_DIRECTORY) / "teamspresence"
-    presence = safeeyes_presence_file.read_text()
+    presence = PRESENCE_FILE_PATH.read_text()
     setting = f"presence_{presence.replace('-', '_')}"
-    if context["plugin_settings"].get(setting, False):
+    if context["plugin_config"].get(setting, False):
         logging.info(f"Teams presence status is {presence}. Skipping break.")
         return True
     return False
