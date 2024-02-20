@@ -1,7 +1,7 @@
 import logging
-import os
-import platform
 from pathlib import Path
+
+from safeeyes import utility
 
 context = None
 
@@ -22,23 +22,8 @@ def on_start_break(break_obj) -> bool:
     return _should_skip_break()
 
 
-def _user_data_dir() -> Path:
-    """Get user data directory."""
-    system = platform.system()
-    if system == "Windows":
-        # Typically, C:\Users\<User>\AppData\Local
-        data_dir = Path(os.getenv("LOCALAPPDATA"))
-    elif system == "Darwin":
-        # Typically, /Users/<User>/Library/Application Support
-        data_dir = Path.home() / "Library" / "Application Support"
-    else:  # Linux and other Unix-like systems
-        # XDG standard for Linux; fallback to HOME if not set
-        data_dir = Path(os.getenv("XDG_DATA_HOME", Path.home() / ".local" / "share"))
-    return data_dir
-
-
 def _should_skip_break() -> bool:
-    safeeyes_presence_file = _user_data_dir() / "safeeyes" / "teamspresence"
+    safeeyes_presence_file = Path(utility.CONFIG_DIRECTORY) / "teamspresence"
     presence = safeeyes_presence_file.read_text()
     setting = f"presence_{presence.replace('-', '_')}"
     if context["plugin_settings"].get(setting, False):
