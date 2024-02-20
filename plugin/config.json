@@ -1,0 +1,16 @@
+{
+    "meta": {
+        "name": "Teams Do Not Disturb Custom",
+        "description": "Skip break if the active window is in fullscreen mode",
+        "version": "0.1"
+    },
+    "dependencies": {
+        "python_modules": [],
+        "shell_commands": [],
+        "operating_systems": [],
+        "desktop_environments": [],
+        "resources": []
+    },
+    "settings": [],
+    "break_override_allowed": true
+}
