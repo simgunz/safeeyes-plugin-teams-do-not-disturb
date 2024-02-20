@@ -28,7 +28,11 @@ def on_start_break(break_obj) -> bool:
 def _should_skip_break() -> bool:
     presence = PRESENCE_FILE_PATH.read_text()
     setting = f"presence_{presence.replace('-', '_')}"
-    if context["plugin_config"].get(setting, False):
+    if setting not in context["plugin_config"]:
+        logging.warning(f"{presence} is not a valid presence status.")
+        return False
+    if context["plugin_config"][setting]:
         logging.info(f"Teams presence status is {presence}. Skipping break.")
         return True
+    logging.info(f"Teams presence status is {presence}. Break allowed.")
     return False
