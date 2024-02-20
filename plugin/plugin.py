@@ -3,7 +3,13 @@ import os
 import platform
 from pathlib import Path
 
-SKIP_BREAKS_STATUSES = ["presenting", "on-the-phone"]
+context = None
+
+
+def init(ctx, safeeyes_config, plugin_config) -> None:
+    global context
+    context = ctx
+    context["plugin_config"] = plugin_config
 
 
 def on_pre_break(break_obj) -> bool:
@@ -34,7 +40,8 @@ def _user_data_dir() -> Path:
 def _should_skip_break() -> bool:
     safeeyes_presence_file = _user_data_dir() / "safeeyes" / "teamspresence"
     presence = safeeyes_presence_file.read_text()
-    if presence in SKIP_BREAKS_STATUSES:
+    setting = f"presence_{presence.replace('-', '_')}"
+    if context["plugin_settings"].get(setting, False):
         logging.info(f"Teams presence status is {presence}. Skipping break.")
         return True
     return False

@@ -1,16 +1,65 @@
 {
-    "meta": {
-        "name": "Teams Do Not Disturb Custom",
-        "description": "Skip break if the active window is in fullscreen mode",
-        "version": "0.1"
+  "meta": {
+    "name": "Do Not Disturb - Teams",
+    "description": "Skip breaks based on the Teams web app presence status.",
+    "version": "0.1"
+  },
+  "dependencies": {
+    "python_modules": [],
+    "shell_commands": [],
+    "operating_systems": [],
+    "desktop_environments": [],
+    "resources": []
+  },
+  "settings": [
+    {
+      "id": "presence_on_the_phone",
+      "label": "Do not disturb while ''on the phone'",
+      "type": "BOOL",
+      "default": true
     },
-    "dependencies": {
-        "python_modules": [],
-        "shell_commands": [],
-        "operating_systems": [],
-        "desktop_environments": [],
-        "resources": []
+    {
+      "id": "presence_presenting",
+      "label": "Do not disturb while 'presenting",
+      "type": "BOOL",
+      "default": true
     },
-    "settings": [],
-    "break_override_allowed": true
+    {
+      "id": "presence_online",
+      "label": "Do not disturb while 'online",
+      "type": "BOOL",
+      "default": false
+    },
+    {
+      "id": "presence_busy",
+      "label": "Do not disturb while 'busy",
+      "type": "BOOL",
+      "default": false
+    },
+    {
+      "id": "presence_do_not_disturb",
+      "label": "Do not disturb while 'do not disturb",
+      "type": "BOOL",
+      "default": false
+    },
+    {
+      "id": "presence_be_right_back",
+      "label": "Do not disturb while 'be right back",
+      "type": "BOOL",
+      "default": false
+    },
+    {
+      "id": "presence_away",
+      "label": "Do not disturb while 'away",
+      "type": "BOOL",
+      "default": false
+    },
+    {
+      "id": "presence_offline",
+      "label": "Do not disturb while 'offline",
+      "type": "BOOL",
+      "default": false
+    }
+  ],
+  "break_override_allowed": true
 }
