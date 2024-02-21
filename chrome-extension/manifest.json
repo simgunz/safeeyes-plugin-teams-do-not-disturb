@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Microsoft Teams Presence",
+  "name": "Teams Presence",
   "description": "Webhook that publishes the user presence status with a POST request.",
   "version": "1.0",
   "icons": {
