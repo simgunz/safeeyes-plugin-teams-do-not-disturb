@@ -14,49 +14,49 @@
   "settings": [
     {
       "id": "presence_on_the_phone",
-      "label": "Do not disturb while ''on the phone'",
+      "label": "Do not disturb while 'on the phone'",
       "type": "BOOL",
       "default": true
     },
     {
       "id": "presence_presenting",
-      "label": "Do not disturb while 'presenting",
+      "label": "Do not disturb while 'presenting'",
       "type": "BOOL",
       "default": true
     },
     {
       "id": "presence_online",
-      "label": "Do not disturb while 'online",
+      "label": "Do not disturb while 'online'",
       "type": "BOOL",
       "default": false
     },
     {
       "id": "presence_busy",
-      "label": "Do not disturb while 'busy",
+      "label": "Do not disturb while 'busy'",
       "type": "BOOL",
       "default": false
     },
     {
       "id": "presence_do_not_disturb",
-      "label": "Do not disturb while 'do not disturb",
+      "label": "Do not disturb while 'do not disturb'",
       "type": "BOOL",
       "default": false
     },
     {
       "id": "presence_be_right_back",
-      "label": "Do not disturb while 'be right back",
+      "label": "Do not disturb while 'be right back'",
       "type": "BOOL",
       "default": false
     },
     {
       "id": "presence_away",
-      "label": "Do not disturb while 'away",
+      "label": "Do not disturb while 'away'",
       "type": "BOOL",
       "default": false
     },
     {
       "id": "presence_offline",
-      "label": "Do not disturb while 'offline",
+      "label": "Do not disturb while 'offline'",
       "type": "BOOL",
       "default": false
     }
