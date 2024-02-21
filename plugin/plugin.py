@@ -2,18 +2,20 @@ import json
 import logging
 
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from pathlib import Path
-from threading import Thread
+from threading import Thread, Lock
 
 context = None
-PRESENCE_FILE_PATH = Path.home() / ".local" / "share" / "safeeyes" / "teamspresence"
 
 
 def init(ctx, safeeyes_config, plugin_config) -> None:
     global context
     context = ctx
     context["plugin_config"] = plugin_config
-    server_thread = Thread(target=run_server, args=(5000,), daemon=True)
+    presence_manager = PresenceManager()
+    context["presence_manager"] = presence_manager
+    server_thread = Thread(
+        target=run_server, args=(presence_manager, 5000), daemon=True
+    )
     server_thread.start()
 
 
@@ -28,7 +30,9 @@ def on_start_break(break_obj) -> bool:
 
 
 def _should_skip_break() -> bool:
-    presence = PRESENCE_FILE_PATH.read_text()
+    presence = context["presence_manager"].get_status()
+    if presence is None:
+        return False
     setting = f"presence_{presence.replace('-', '_')}"
     if setting not in context["plugin_config"]:
         logging.warning(f"{presence} is not a valid presence status.")
@@ -40,7 +44,25 @@ def _should_skip_break() -> bool:
     return False
 
 
+class PresenceManager:
+    def __init__(self):
+        self._status = None
+        self._lock = Lock()
+
+    def set_status(self, status):
+        with self._lock:
+            self._status = status
+
+    def get_status(self):
+        with self._lock:
+            return self._status
+
+
 class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
+
+    def __init__(self, *args, **kwargs):
+        self.presence_manager = kwargs.pop("presence_manager", None)
+        super().__init__(*args, **kwargs)
 
     def do_OPTIONS(self):
         self.send_response(200, "ok")
@@ -55,7 +77,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         try:
             data = json.loads(body)
             if "status" in data:
-                self.write_status_to_file(data["status"])
+                self.presence_manager.set_status(data["status"])
                 self.send_response(200)
                 self.send_header("Content-type", "text/plain; charset=utf-8")
                 self.end_headers()
@@ -70,13 +92,13 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
 
-    def write_status_to_file(self, status):
-        PRESENCE_FILE_PATH.parent.mkdir(exist_ok=True)
-        PRESENCE_FILE_PATH.write_text(status)
 
-
-def run_server(port=5000):
+def run_server(presence_manager: PresenceManager, port=5000):
     server_address = ("", port)
-    httpd = HTTPServer(server_address, SimpleHTTPRequestHandler)
-    logging.info(f"Starting teams presence httpd on port {port}...")
+
+    def handler(*args, **kwargs):
+        SimpleHTTPRequestHandler(*args, presence_manager=presence_manager, **kwargs)
+
+    httpd = HTTPServer(server_address, handler)
+    logging.info(f"Starting teams presence server on port {port}...")
     httpd.serve_forever()
