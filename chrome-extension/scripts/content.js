@@ -1,5 +1,5 @@
 function addObserverIfDesiredNodeAvailable() {
-    let target = document.querySelector('.user-information-button .status-icon');
+    let target = document.querySelector('.me-control-avatar-badge');
     if(!target) {
         // The node we need does not exist yet.
         window.setTimeout(addObserverIfDesiredNodeAvailable, 500);
@@ -7,7 +7,7 @@ function addObserverIfDesiredNodeAvailable() {
     }
     let observer = new MutationObserver(function(mutations) {
         mutations.forEach(function(mutation) {
-            let presenceStatus = mutation.target.classList[2];
+            let presenceStatus = mutation.target.ariaLabel;
             let xhr = new XMLHttpRequest();
             xhr.open("POST", "http://localhost:5000", true);
             xhr.setRequestHeader('Content-Type', 'application/json');
