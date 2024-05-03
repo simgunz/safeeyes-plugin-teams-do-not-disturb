@@ -93,7 +93,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
 
 
-def run_server(presence_manager: PresenceManager, port=5000):
+def run_server(presence_manager: PresenceManager, port=6776):
     server_address = ("", port)
 
     def handler(*args, **kwargs):

@@ -9,7 +9,7 @@ function addObserverIfDesiredNodeAvailable() {
         mutations.forEach(function(mutation) {
             let presenceStatus = mutation.target.ariaLabel;
             let xhr = new XMLHttpRequest();
-            xhr.open("POST", "http://localhost:5000", true);
+            xhr.open("POST", "http://localhost:6776", true);
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.send(JSON.stringify({
                 status: presenceStatus,
